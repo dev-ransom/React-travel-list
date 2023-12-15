@@ -69,10 +69,15 @@ input {
   padding: 1.2rem 3.2rem;
   font-weight: 700;
   font-size: 1.8rem;
+  
+}
+
+.add-form select{
   cursor: pointer;
 }
 
 .add-form button {
+  cursor: pointer;
   text-transform: uppercase;
   background-color: #76c7ad;
 }
