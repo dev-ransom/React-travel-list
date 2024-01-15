@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
-const initialItems = [
-  { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: false },
-  { id: 3, description: "belts", quantity: 23, packed: true },
-];
+// const initialItems = [
+//   { id: 1, description: "Passports", quantity: 2, packed: false },
+//   { id: 2, description: "Socks", quantity: 12, packed: false },
+//   { id: 3, description: "belts", quantity: 23, packed: true },
+// ];
 export default function App() {
+  const [items, setItems] = useState([]);
+  function handleAddItem(item) {
+    setItems(items => [...items, item])   
+  }
+
+  function handleDeleteItem(id) {
+    setItems(items => items.filter(item => item.id !== id))
+  }
   return (
     <div className='app'>
       <Logo />
-      <Form />
-      <PackingList />
+      <Form onAddItems={handleAddItem}  />
+      <PackingList items={items} onDeleteItems={handleDeleteItem}/>
       <Stats />
     </div>
   )
@@ -24,23 +32,27 @@ function Logo() {
   )
 }
 
-function Form() {
+function Form({onAddItems}) {
   const resetInput = () => {
     setDescription('')
   }
   const resetQuantity = () => {
     setQuantity('')
   }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (!description) return
     const newItem = { description, quantity, packed: false, id: Date.now() }
-    console.log(newItem);
+   
+    onAddItems(newItem);
     resetInput()
     resetQuantity();
   }
+
   const [description, setDescription] = useState("")
   const [quantity, setQuantity] = useState(1)
+  
   return (
     <form className='add-form' onSubmit={handleSubmit}>
       <h3>what do you need for your 😍 trip?</h3>
@@ -54,19 +66,20 @@ function Form() {
 }
 
 
-function PackingList() {
+function PackingList({items, onDeleteItems}) {
   return (
     <div className='list'>
-      <ul>{initialItems.map(item => <Item item={item} key={item.id} />)}</ul>
+      <ul>{items.map(item => <Item item={item} onDeleteItems={onDeleteItems} key={item.id} />)}</ul>
     </div>
   )
 }
 
-function Item({ item }) {
+function Item({ item, onDeleteItems }) {
   return (
     <li>
+      <input type="checkbox" value={item.packed} />
       <span style={item.packed ? { textDecoration: 'line-through'} : {}}> {item.quantity} {item.description} </span>
-      <button>❌</button>
+      <button onClick={()=> onDeleteItems(item.id)}>❌</button>
     </li>
   )
 }
@@ -78,3 +91,5 @@ function Stats() {
     </footer>
   )
 }
+
+
