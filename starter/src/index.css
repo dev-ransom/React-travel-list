@@ -103,6 +103,10 @@ input {
   margin: 0 0.8rem;
 }
 
+.actions button{
+  cursor: pointer;
+}
+
 .list ul {
   list-style: none;
   width: 80%;
