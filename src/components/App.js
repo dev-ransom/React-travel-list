@@ -23,7 +23,7 @@ export default function App() {
   }
 
   function handleClearList() {
-    if (!items.length === 0) {
+    if (items.length > 0) {
       const confirmed = window.confirm(
         'are you sure you want to delete all items',
         )
